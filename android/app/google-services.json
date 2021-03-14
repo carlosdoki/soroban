@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "638101014103",
+    "project_id": "dokiads",
+    "storage_bucket": "dokiads.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638101014103:android:3667508b58f046aef70512",
+        "android_client_info": {
+          "package_name": "com.carlosdoki.bmiCalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638101014103-pd25tn5fs3mkjv7bmfsrh30cc2srh5fc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carlosdoki.bmiCalculator",
+            "certificate_hash": "eaaac2aa37f210ea8a9f7e24ce249107d97e7886"
+          }
+        },
+        {
+          "client_id": "638101014103-f6dbo3t7s87dknjetdo5crtif29hv9rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxW4CUyQUsQtsJfZ4dyrcCJrcg3PiHVaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638101014103-f6dbo3t7s87dknjetdo5crtif29hv9rq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "638101014103-ml9ed30v45dbfi73g7hsdug4pdmhmrc5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carlosdoki.bmiCalculator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638101014103:android:27ef12b851c06788f70512",
+        "android_client_info": {
+          "package_name": "com.carlosdoki.soroban"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638101014103-e5oc5gngomlde14t6onmtmgb3cj96b1j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carlosdoki.soroban",
+            "certificate_hash": "eaaac2aa37f210ea8a9f7e24ce249107d97e7886"
+          }
+        },
+        {
+          "client_id": "638101014103-f6dbo3t7s87dknjetdo5crtif29hv9rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxW4CUyQUsQtsJfZ4dyrcCJrcg3PiHVaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638101014103-f6dbo3t7s87dknjetdo5crtif29hv9rq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "638101014103-ml9ed30v45dbfi73g7hsdug4pdmhmrc5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carlosdoki.bmiCalculator"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

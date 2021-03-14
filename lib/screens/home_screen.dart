@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   BannerAd createBannerAd() {
     return BannerAd(
         adUnitId: Platform.isAndroid
-            ? "ca-app-pub-1468309003365349/8646819589"
+            ? "ca-app-pub-1468309003365349/9022459180"
             : "ca-app-pub-1468309003365349/3234343247",
         size: AdSize.banner,
         targetingInfo: targetingInfo,
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     FirebaseAdMob.instance.initialize(
       appId: Platform.isAndroid
-          ? "ca-app-pub-1468309003365349~4991834973"
+          ? "ca-app-pub-1468309003365349~3961704194"
           : "ca-app-pub-1468309003365349~7313296855",
     );
     _bannerAd = createBannerAd()
