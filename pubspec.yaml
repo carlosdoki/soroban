@@ -5,7 +5,7 @@ description: App to train the Soroban
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+2
+version: 1.0.1+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -15,6 +15,8 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.1
+  font_awesome_flutter: ^8.4.0
+  admob_banner_stabilizer: ^0.3.1
 
 dev_dependencies:
   flutter_test:

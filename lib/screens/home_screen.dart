@@ -1,6 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
+import 'package:firebase_admob/firebase_admob.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sorobantraining/constants.dart';
+
+enum Operator {
+  plus,
+  minus,
+  multiply,
+  divide,
+}
+
+const String testDevice = 'Mobile_id';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _digitos = 9;
   int _total = 0;
   int _currentSliderValue = 1;
+  String _operator = '+';
+  Operator selectedOperator;
   bool _contaVisible = false;
   bool _totalVisible = false;
   bool startispressed = true;
@@ -21,6 +37,26 @@ class _HomeScreenState extends State<HomeScreen> {
   String stoptimetodisplay = '00:00:00.0000';
   var swatch = Stopwatch();
   final dur = const Duration(milliseconds: 1);
+
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: testDevice != null ? <String>[testDevice] : null,
+    nonPersonalizedAds: true,
+    keywords: <String>['Game', 'Mario'],
+  );
+
+  BannerAd _bannerAd;
+
+  BannerAd createBannerAd() {
+    return BannerAd(
+        adUnitId: Platform.isAndroid
+            ? "ca-app-pub-1468309003365349/8646819589"
+            : "ca-app-pub-1468309003365349/3234343247",
+        size: AdSize.banner,
+        targetingInfo: targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("BannerAd $event");
+        });
+  }
 
   void starttimer() {
     Timer(dur, keeprunning);
@@ -79,15 +115,59 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       firstNumber = Random().nextInt(_digitos);
       secondNumber = Random().nextInt(_digitos);
-      _total = firstNumber + secondNumber;
+
+      if ((secondNumber > firstNumber) &&
+          (selectedOperator == Operator.minus ||
+              selectedOperator == Operator.divide)) {
+        int _temp = secondNumber;
+        secondNumber = firstNumber;
+        firstNumber = _temp;
+      }
+
+      switch (selectedOperator) {
+        case Operator.plus:
+          {
+            _total = firstNumber + secondNumber;
+            break;
+          }
+        case Operator.minus:
+          {
+            _total = firstNumber - secondNumber;
+            break;
+          }
+        case Operator.multiply:
+          {
+            _total = firstNumber * secondNumber;
+            break;
+          }
+        case Operator.divide:
+          {
+            _total = (firstNumber / secondNumber).round();
+            break;
+          }
+      }
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
+    FirebaseAdMob.instance.initialize(
+      appId: Platform.isAndroid
+          ? "ca-app-pub-1468309003365349~4991834973"
+          : "ca-app-pub-1468309003365349~7313296855",
+    );
+    _bannerAd = createBannerAd()
+      ..load()
+      ..show();
+    selectedOperator = Operator.plus;
     super.initState();
     randomNumber();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd.dispose();
+    super.dispose();
   }
 
   @override
@@ -95,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Soroban Training'),
-        backgroundColor: Colors.blue,
+        backgroundColor: kActiveCardColour,
       ),
       body: Container(
         child: Column(
@@ -108,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: Colors.blue,
+                color: kActiveCardColour,
               ),
             ),
             Padding(
@@ -117,12 +197,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 value: _currentSliderValue.toDouble(),
                 min: 1,
                 max: 10,
-                divisions: 100,
+                divisions: 10,
+                activeColor: kActiveCardColour,
+                inactiveColor: kInactiveCardColour,
                 label: _currentSliderValue.round().toString(),
                 onChanged: (double value) {
                   setState(() {
                     String _numeroMax = '';
-                    for (int i = 0; i < _currentSliderValue; i++) {
+                    for (int i = 0; i < value; i++) {
                       _numeroMax = _numeroMax + '9';
                     }
                     _digitos = int.parse(_numeroMax);
@@ -132,7 +214,97 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(
-              height: 40,
+              height: 10,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RawMaterialButton(
+                      elevation: 0.0,
+                      child: Icon(FontAwesomeIcons.plus),
+                      onPressed: (startispressed)
+                          ? () {
+                              setState(() {
+                                selectedOperator = Operator.plus;
+                                _operator = '+';
+                              });
+                            }
+                          : null,
+                      constraints: BoxConstraints.tightFor(
+                        width: 56.0,
+                        height: 56.0,
+                      ),
+                      shape: CircleBorder(),
+                      fillColor: selectedOperator == Operator.plus
+                          ? kActiveCardColour
+                          : kInactiveCardColour,
+                    ),
+                    RawMaterialButton(
+                      elevation: 0.0,
+                      child: Icon(FontAwesomeIcons.minus),
+                      onPressed: (startispressed)
+                          ? () {
+                              setState(() {
+                                selectedOperator = Operator.minus;
+                                _operator = '-';
+                              });
+                            }
+                          : null,
+                      constraints: BoxConstraints.tightFor(
+                        width: 56.0,
+                        height: 56.0,
+                      ),
+                      shape: CircleBorder(),
+                      fillColor: selectedOperator == Operator.minus
+                          ? kActiveCardColour
+                          : kInactiveCardColour,
+                    ),
+                    RawMaterialButton(
+                      elevation: 0.0,
+                      child: Icon(FontAwesomeIcons.times),
+                      onPressed: (startispressed)
+                          ? () {
+                              setState(() {
+                                selectedOperator = Operator.multiply;
+                                _operator = 'x';
+                              });
+                            }
+                          : null,
+                      constraints: BoxConstraints.tightFor(
+                        width: 56.0,
+                        height: 56.0,
+                      ),
+                      shape: CircleBorder(),
+                      fillColor: selectedOperator == Operator.multiply
+                          ? kActiveCardColour
+                          : kInactiveCardColour,
+                    ),
+                    RawMaterialButton(
+                      elevation: 0.0,
+                      child: Icon(FontAwesomeIcons.divide),
+                      onPressed: (startispressed)
+                          ? () {
+                              setState(() {
+                                selectedOperator = Operator.divide;
+                                _operator = '/';
+                              });
+                            }
+                          : null,
+                      constraints: BoxConstraints.tightFor(
+                        width: 56.0,
+                        height: 56.0,
+                      ),
+                      shape: CircleBorder(),
+                      fillColor: selectedOperator == Operator.divide
+                          ? kActiveCardColour
+                          : kInactiveCardColour,
+                    ),
+                  ],
+                ),
+              ),
             ),
             _contaVisible
                 ? Row(
@@ -145,16 +317,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                             fontSize: 40,
                             fontWeight: FontWeight.w600,
-                            color: Colors.blue,
+                            color: kActiveCardColour,
                           ),
                         ),
                       ),
                       Text(
-                        '+',
+                        '$_operator',
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w600,
-                          color: Colors.blue,
+                          color: kActiveCardColour,
                         ),
                       ),
                       Text(
@@ -162,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w600,
-                          color: Colors.blue,
+                          color: kActiveCardColour,
                         ),
                       ),
                     ],
@@ -174,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.w600,
-                      color: Colors.blue,
+                      color: kActiveCardColour,
                     ),
                   )
                 : Container(),
@@ -190,6 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w700,
+                        color: kActiveCardColour,
                       ),
                     ),
                   ),
@@ -280,6 +453,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 80,
             ),
           ],
         ),

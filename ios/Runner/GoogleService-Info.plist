@@ -21,16 +21,18 @@
 	<key>STORAGE_BUCKET</key>
 	<string>dokiads.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:638101014103:ios:a173ac2239cbdbc2f70512</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-1468309003365349~7313296855</string>
 </dict>
 </plist>
