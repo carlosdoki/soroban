@@ -6,13 +6,9 @@ import 'dart:async';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sorobantraining/constants.dart';
-
-enum Operator {
-  plus,
-  minus,
-  multiply,
-  divide,
-}
+import 'package:sorobantraining/screens/components/BotaoOperacao.dart';
+import 'package:sorobantraining/screens/components/ButtonStartStopReset.dart';
+import 'package:sorobantraining/screens/components/textNumberCalc.dart';
 
 const String testDevice = 'Mobile_id';
 
@@ -39,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final dur = const Duration(milliseconds: 1);
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    testDevices: testDevice != null ? <String>[testDevice] : null,
+    // testDevices: testDevice != null ? <String>[testDevice] : null,
     nonPersonalizedAds: true,
     keywords: <String>['Game', 'Mario'],
   );
@@ -222,9 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RawMaterialButton(
-                      elevation: 0.0,
-                      child: Icon(FontAwesomeIcons.plus),
+                    BotaoOperacao(
+                      selectedOperator: selectedOperator,
                       onPressed: (startispressed)
                           ? () {
                               setState(() {
@@ -233,18 +228,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             }
                           : null,
-                      constraints: BoxConstraints.tightFor(
-                        width: 56.0,
-                        height: 56.0,
-                      ),
-                      shape: CircleBorder(),
-                      fillColor: selectedOperator == Operator.plus
-                          ? kActiveCardColour
-                          : kInactiveCardColour,
+                      comparedOperator: Operator.plus,
+                      iconData: FontAwesomeIcons.plus,
                     ),
-                    RawMaterialButton(
-                      elevation: 0.0,
-                      child: Icon(FontAwesomeIcons.minus),
+                    BotaoOperacao(
+                      selectedOperator: selectedOperator,
                       onPressed: (startispressed)
                           ? () {
                               setState(() {
@@ -253,18 +241,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             }
                           : null,
-                      constraints: BoxConstraints.tightFor(
-                        width: 56.0,
-                        height: 56.0,
-                      ),
-                      shape: CircleBorder(),
-                      fillColor: selectedOperator == Operator.minus
-                          ? kActiveCardColour
-                          : kInactiveCardColour,
+                      comparedOperator: Operator.minus,
+                      iconData: FontAwesomeIcons.minus,
                     ),
-                    RawMaterialButton(
-                      elevation: 0.0,
-                      child: Icon(FontAwesomeIcons.times),
+                    BotaoOperacao(
+                      selectedOperator: selectedOperator,
                       onPressed: (startispressed)
                           ? () {
                               setState(() {
@@ -273,18 +254,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             }
                           : null,
-                      constraints: BoxConstraints.tightFor(
-                        width: 56.0,
-                        height: 56.0,
-                      ),
-                      shape: CircleBorder(),
-                      fillColor: selectedOperator == Operator.multiply
-                          ? kActiveCardColour
-                          : kInactiveCardColour,
+                      comparedOperator: Operator.multiply,
+                      iconData: FontAwesomeIcons.times,
                     ),
-                    RawMaterialButton(
-                      elevation: 0.0,
-                      child: Icon(FontAwesomeIcons.divide),
+                    BotaoOperacao(
+                      selectedOperator: selectedOperator,
                       onPressed: (startispressed)
                           ? () {
                               setState(() {
@@ -293,14 +267,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             }
                           : null,
-                      constraints: BoxConstraints.tightFor(
-                        width: 56.0,
-                        height: 56.0,
-                      ),
-                      shape: CircleBorder(),
-                      fillColor: selectedOperator == Operator.divide
-                          ? kActiveCardColour
-                          : kInactiveCardColour,
+                      comparedOperator: Operator.divide,
+                      iconData: FontAwesomeIcons.divide,
                     ),
                   ],
                 ),
@@ -310,44 +278,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                        onPressed: () => randomNumber(),
-                        child: Text(
-                          '$firstNumber',
-                          style: TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w600,
-                            color: kActiveCardColour,
-                          ),
-                        ),
+                      TextNumberCalc(
+                        txtNumber: firstNumber.toString(),
                       ),
-                      Text(
-                        '$_operator',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w600,
-                          color: kActiveCardColour,
-                        ),
+                      TextNumberCalc(
+                        txtNumber: _operator,
                       ),
-                      Text(
-                        '$secondNumber',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w600,
-                          color: kActiveCardColour,
-                        ),
+                      TextNumberCalc(
+                        txtNumber: secondNumber.toString(),
                       ),
                     ],
                   )
                 : Container(),
             _totalVisible
-                ? Text(
-                    ' = $_total',
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.w600,
-                      color: kActiveCardColour,
-                    ),
+                ? TextNumberCalc(
+                    txtNumber: ' = $_total',
                   )
                 : Container(),
             SizedBox(
@@ -357,13 +302,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   Container(
-                    child: Text(
-                      stoptimetodisplay,
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w700,
-                        color: kActiveCardColour,
-                      ),
+                    child: TextNumberCalc(
+                      txtNumber: stoptimetodisplay,
                     ),
                   ),
                   SizedBox(
@@ -373,80 +313,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(15, 5, 15, 15),
-                          child: GestureDetector(
-                            // onTap: startispressed ? startstopwatch : null,
-                            onTap: startstopwatch,
-                            child: Container(
-                              height: 75,
-                              width: 75,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.green,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Start',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        ButtonStartStopReset(
+                          texto: 'Start',
+                          color: Colors.green,
+                          onTap: startstopwatch,
                         ),
                         SizedBox(width: 10),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(15, 5, 15, 15),
-                          child: GestureDetector(
-                            onTap: stopispressed ? null : stopstopwatch,
-                            child: Container(
-                              height: 75,
-                              width: 75,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.red,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Stop',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        ButtonStartStopReset(
+                          texto: 'Stop',
+                          color: Colors.red,
+                          onTap: stopispressed ? null : stopstopwatch,
                         ),
                         SizedBox(width: 10),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(15, 5, 15, 15),
-                          child: GestureDetector(
-                            onTap: resetispressed ? null : resetstopwatch,
-                            child: Container(
-                              height: 75,
-                              width: 75,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.cyan,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Reset',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        ButtonStartStopReset(
+                          texto: 'Reset',
+                          color: Colors.cyan,
+                          onTap: resetispressed ? null : resetstopwatch,
                         ),
                       ],
                     ),
